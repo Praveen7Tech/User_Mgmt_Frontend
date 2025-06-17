@@ -5,25 +5,39 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
 import { useNavigate } from "react-router-dom";
+import {validateForm} from "../utils/validateForm"
 
 const RegisterForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const [nameMsg, setNameMsg] = useState("")
+  const [emailMsg, setEmailMsg] = useState("")
+  const [passMsg, setPassMsg] = useState("")
+
   const [error,setError] = useState("")
-  console.log(name,email,password)
 
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-const FormSubmit= async(e)=>{
-    e.preventDefault()
+
+  const checkValidation = ()=>{
+    const {nameError,emailError,paswordError} = validateForm(name,email,password)
+    setNameMsg(nameError)
+    setEmailMsg(emailError)
+    setPassMsg(paswordError)
+
+    if(nameError || emailError || paswordError) return;
+
+    FormSubmit()
+  }
+
+const FormSubmit= async()=>{
     try {
         const formData = {name,email,password}
         console.log("data",formData)
         const {data} = await axios.post("http://localhost:3003/api/auth/register", formData)
-
-        console.log("res data",data)
         
         dispatch(setUser({user : data.user, token : data.token}))
         navigate("/Home")
@@ -33,7 +47,6 @@ const FormSubmit= async(e)=>{
         if(error.response.data.message){
             setError(error.response.data.message)
         }
-        console.log("error msg", error.response.data.message)
     }
 }
 
@@ -47,7 +60,7 @@ const FormSubmit= async(e)=>{
           <p className="text-gray-600">Join us today</p>
         </div>
 
-        <form className="space-y-6" onSubmit={FormSubmit}>
+        <form className="space-y-6" onSubmit={(e)=> e.preventDefault()}>
           <div>
             <label
               htmlFor="name"
@@ -63,6 +76,7 @@ const FormSubmit= async(e)=>{
               value={name}
               onChange={(e)=> setName(e.target.value)}
             />
+            <span className="text-red-500 text-sm">{nameMsg}</span>
           </div>
 
           <div>
@@ -80,6 +94,7 @@ const FormSubmit= async(e)=>{
               value={email}
               onChange={(e)=> setEmail(e.target.value)}
             />
+            <span className="text-red-500 text-sm">{emailMsg}</span>
           </div>
 
           <div>
@@ -97,12 +112,14 @@ const FormSubmit= async(e)=>{
               value={password}
               onChange={(e)=> setPassword(e.target.value)}
             />
-            {error && <span>{error}</span>}
+            {passMsg && <span className="text-red-500 text-sm">{passMsg}</span>}
+            {!passMsg && error && <span className="text-red-500 text-sm">{error}</span>}
+
           </div>
 
           <button
-            type="submit"
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 font-medium"
+            onClick={checkValidation}
           >
             Register
           </button>
