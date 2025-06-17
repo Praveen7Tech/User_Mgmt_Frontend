@@ -4,27 +4,36 @@ import axios from "axios";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/userSlice";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const RegisterForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error,setError] = useState("")
   console.log(name,email,password)
 
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
 const FormSubmit= async(e)=>{
     e.preventDefault()
     try {
         const formData = {name,email,password}
-        const {data} = await axios("http://localhost:3003/api/auth/register", formData)
+        console.log("data",formData)
+        const {data} = await axios.post("http://localhost:3003/api/auth/register", formData)
+
+        console.log("res data",data)
         
         dispatch(setUser({user : data.user, token : data.token}))
-        Navigate("/Home")
+        navigate("/Home")
 
     } catch (error) {
         console.log(error)
+        if(error.response.data.message){
+            setError(error.response.data.message)
+        }
+        console.log("error msg", error.response.data.message)
     }
 }
 
@@ -88,6 +97,7 @@ const FormSubmit= async(e)=>{
               value={password}
               onChange={(e)=> setPassword(e.target.value)}
             />
+            {error && <span>{error}</span>}
           </div>
 
           <button
