@@ -4,19 +4,26 @@ import Login from './pages/Login'
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Register from './pages/Register'
+import ProtectedRoute from './context/ProtectedRoute'
+import PublicRoute from './context/PublicRoute'
 
 function App() {
   return (
     <>
       <Routes>
         <Route path="/"
-         element={<Login/>}
-         />
-         <Route path="/Register"
-         element={<Register/>}
+         element={
+          <PublicRoute>
+             <Register/>
+         </PublicRoute>
+        }
          />
          <Route path="/Home" 
-         element={<Home/>}
+         element={
+          <ProtectedRoute>
+              <Home/>
+         </ProtectedRoute>
+        }
          />
       </Routes>
     </>

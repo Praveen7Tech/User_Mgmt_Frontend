@@ -8,6 +8,8 @@ import { useNavigate } from "react-router-dom";
 import {validateForm} from "../utils/validateForm"
 
 const RegisterForm = () => {
+  const [isLogin, setLogin] = useState(false)
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -22,22 +24,23 @@ const RegisterForm = () => {
   const navigate = useNavigate()
 
 
-  const checkValidation = ()=>{
-    const {nameError,emailError,paswordError} = validateForm(name,email,password)
+  const checkValidation = async()=>{
+    const {nameError,emailError,paswordError} = validateForm(name,email,password,isLogin)
     setNameMsg(nameError)
     setEmailMsg(emailError)
     setPassMsg(paswordError)
 
     if(nameError || emailError || paswordError) return;
 
-    FormSubmit()
+    await FormSubmit()
   }
 
 const FormSubmit= async()=>{
     try {
-        const formData = {name,email,password}
-        console.log("data",formData)
-        const {data} = await axios.post("http://localhost:3003/api/auth/register", formData)
+        const formData = isLogin ? {name,email,password} : {email,password}
+        console.log("dta-",formData)
+        const url = isLogin ? "http://localhost:3003/api/auth/register" : "http://localhost:3003/api/auth/login"
+        const {data} = await axios.post(url, formData)
         
         dispatch(setUser({user : data.user, token : data.token}))
         navigate("/Home")
@@ -55,12 +58,14 @@ const FormSubmit= async()=>{
       <div className="max-w-md w-full bg-white rounded-lg shadow-md p-8">
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Create Account
+           {isLogin ? "Create Account" : "Log In" }
           </h1>
-          <p className="text-gray-600">Join us today</p>
+          <p className="text-gray-600">{isLogin ? "Join us today" : "Welcome Back.."}</p>
         </div>
 
         <form className="space-y-6" onSubmit={(e)=> e.preventDefault()}>
+          <div>
+          {isLogin &&
           <div>
             <label
               htmlFor="name"
@@ -77,6 +82,8 @@ const FormSubmit= async()=>{
               onChange={(e)=> setName(e.target.value)}
             />
             <span className="text-red-500 text-sm">{nameMsg}</span>
+          </div>
+          }
           </div>
 
           <div>
@@ -121,21 +128,19 @@ const FormSubmit= async()=>{
             className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 font-medium"
             onClick={checkValidation}
           >
-            Register
+            {isLogin ? "Register" : "Log In"}
           </button>
         </form>
 
         <div className="mt-6 text-center">
-          <p className="text-gray-600 mb-4">Already have an account?</p>
+          <p className="text-gray-600 mb-4">{isLogin ? "Already have an account?" : "Don't have an account please register"}</p>
           <button
             className="inline-block bg-gray-100 text-gray-700 py-2 px-6 rounded-md hover:bg-gray-200 transition duration-200 font-medium cursor-pointer"
             onClick={() => {
-              // Add your navigation logic here
-              // For example: navigate('/login') if using React Router
-              console.log("Navigate to login");
+              setLogin(!isLogin)  
             }}
           >
-            Login
+            {isLogin ? "Login" : "Register"}
           </button>
         </div>
       </div>
