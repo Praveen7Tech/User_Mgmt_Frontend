@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import Register from './pages/Register'
 import ProtectedRoute from './context/ProtectedRoute'
 import PublicRoute from './context/PublicRoute'
+import UserProfile from './pages/UserProfile'
 
 function App() {
   return (
@@ -25,6 +26,12 @@ function App() {
          </ProtectedRoute>
         }
          />
+         <Route path="/userProfile" 
+         element={
+          <ProtectedRoute>
+            <UserProfile/>
+          </ProtectedRoute>
+         }/>
       </Routes>
     </>
   )

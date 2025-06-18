@@ -38,7 +38,7 @@ const RegisterForm = () => {
 const FormSubmit= async()=>{
     try {
         const formData = isLogin ? {name,email,password} : {email,password}
-        console.log("dta-",formData)
+        
         const url = isLogin ? "http://localhost:3003/api/auth/register" : "http://localhost:3003/api/auth/login"
         const {data} = await axios.post(url, formData)
         
