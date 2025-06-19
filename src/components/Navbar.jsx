@@ -1,17 +1,29 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { logoutUser } from '../redux/userSlice'
+import { logoutAdmin } from "../redux/adminSlice"
 import { DiAndroid  } from "react-icons/di";
 import { Link } from 'react-router-dom';
 import useUserData from '../hooks/useUserData';
 
 const Navbar = () => {
   
+  const user = useSelector((state) => state.user);
+  //const admin = useSelector((store)=> store.admin)
+
   const {name} = useUserData()
   const dispatch = useDispatch()
 
+
   const LogOut =()=>{
-    dispatch(logoutUser())
+    if(user?.userinfo?.role === "user"){
+      console.log("user click")
+      dispatch(logoutUser())
+    }else{
+      console.log("admin click")
+      dispatch(logoutAdmin())
+    }
+    
   }
   
   return (

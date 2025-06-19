@@ -1,11 +1,20 @@
 import { useSelector } from "react-redux"
-import { Navigate } from "react-router-dom"
+import { Navigate, useLocation } from "react-router-dom"
 
+const PublicRoute = ({ children }) => {
+  const userToken = useSelector((store) => store.user.token)
+  const adminToken = useSelector((store) => store.admin.token)
+  const location = useLocation()
 
-const PublicRoute = ({children})=>{
-    const user = useSelector((store)=> store.user.token)
-    
-    return !user ? children : <Navigate to="/Home" replace/>
+  if (userToken) {
+    return <Navigate to="/Home" replace state={{ from: location }} />
+  }
+
+  if (adminToken) {
+    return <Navigate to="/dashboard" replace state={{ from: location }} />
+  }
+
+  return children
 }
 
 export default PublicRoute

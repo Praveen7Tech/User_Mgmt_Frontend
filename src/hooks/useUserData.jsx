@@ -11,6 +11,7 @@ const useUserData = ()=>{
   const ProfileImage = `http://localhost:3003/${image}`
 
   const User = useSelector((store)=> store.user.userinfo)
+  const Admin = useSelector((store)=> store.admin.admininfo)
 
   useEffect(()=>{
      fetchUserData()
@@ -18,7 +19,7 @@ const useUserData = ()=>{
 
   const fetchUserData=async()=>{
      try {
-       const userId = User._id
+       const userId =User ? User._id : Admin.id
        const {data} = await axios.get(`http://localhost:3003/api/user/getUserData/${userId}`)
 
        setName(data.name)

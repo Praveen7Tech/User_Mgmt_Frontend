@@ -7,6 +7,8 @@ import Register from './pages/Register'
 import ProtectedRoute from './context/ProtectedRoute'
 import PublicRoute from './context/PublicRoute'
 import UserProfile from './pages/UserProfile'
+import AdminLogin from './pages/AdminLogin'
+import DashBoard from './pages/DashBoard'
 
 function App() {
   return (
@@ -31,7 +33,22 @@ function App() {
           <ProtectedRoute>
             <UserProfile/>
           </ProtectedRoute>
-         }/>
+         }
+         />
+         <Route path="/adminLogin"
+         element={
+          <PublicRoute>
+            <AdminLogin/>
+         </PublicRoute>
+        } 
+         />
+         <Route path="/dashboard"
+         element={
+          <ProtectedRoute>
+           <DashBoard/>
+          </ProtectedRoute>
+         }
+         />
       </Routes>
     </>
   )
