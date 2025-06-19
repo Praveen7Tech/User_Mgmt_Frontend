@@ -9,6 +9,7 @@ import PublicRoute from './context/PublicRoute'
 import UserProfile from './pages/UserProfile'
 import AdminLogin from './pages/AdminLogin'
 import DashBoard from './pages/DashBoard'
+import ShowProfileCard from './components/ShowpROFILEcARD.JSX'
 
 function App() {
   return (
@@ -49,6 +50,10 @@ function App() {
           </ProtectedRoute>
          }
          />
+         <Route path="/ShowUser/:userId"
+         element={
+           <ShowProfileCard/>
+         }/>
       </Routes>
     </>
   )
