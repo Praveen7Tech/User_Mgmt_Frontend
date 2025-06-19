@@ -1,15 +1,44 @@
 import { User, Mail,Phone } from "lucide-react"
 import Navbar from "./Navbar"
-import { useParams } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 import useProfileData from "../hooks/useProfileData"
+import { useState } from "react"
+import axios from "axios"
+import { toast } from "react-toastify"
 
 const ShowProfileCard = () => {
-    const {userId} = useParams()
+   const [editMode,setEditMode] = useState(false)
+   const [editName, setEditname] = useState("")
 
+   const navigate = useNavigate()
+
+    const {userId} = useParams()
     const userData = useProfileData(userId)
     if(!userData) return 
     const {name,email,profileImage} = userData
     const imageURL = `http://localhost:3003/${profileImage}`
+
+    const EditUser = async()=>{
+      const Data = {editName} 
+      try {
+        const data = await axios.put(`http://localhost:3003/api/admin/editUser/${userId}`,Data)
+        toast.success(data.data.message)
+        setEditMode(false)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    const DeleteUser = async()=>{
+      try {
+        const data = await axios.delete(`http://localhost:3003/api/admin/deleteUser/${userId}`)
+        toast.success(data.data.message)
+        navigate("/dashboard")
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    
   return (
     <>
     <Navbar/>
@@ -33,7 +62,11 @@ const ShowProfileCard = () => {
               <User className="w-5 h-5 text-purple-500" />
               <div>
                 <p className="text-sm text-gray-500">Name</p>
-                <p className="text-gray-800 font-medium">{name}</p>
+                {editMode ? 
+                  <input type="text" className="flex-1 px-4 py-1 border border-gray-400 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" onChange={(e)=> setEditname(e.target.value)}/>
+                  :
+                  <p className="text-gray-800 font-medium">{name}</p>
+                }
               </div>
             </div>
 
@@ -55,11 +88,26 @@ const ShowProfileCard = () => {
           </div>
 
           {/* Action Button */}
-          <div className="flex pt-6">
-            <button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg font-medium transition-colors">
+          {
+            editMode ? 
+            (<div className="flex pt-6 gap-7">
+            <button className="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-medium transition-colors" onClick={EditUser}>
+              Save
+            </button>
+             <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-medium transition-colors" onClick={()=>setEditMode(false)}>
+              Cancel Edit
+            </button>
+          </div>)
+          :
+          (<div className="flex pt-6 gap-7">
+            <button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg font-medium transition-colors" onClick={()=> setEditMode(true)}>
               Edit Profile
             </button>
-          </div>
+             <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-medium transition-colors" onClick={DeleteUser}>
+              Delete Profile
+            </button>
+          </div>)
+          }
         </div>
       </div>
     </div>

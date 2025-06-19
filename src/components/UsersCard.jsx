@@ -1,10 +1,19 @@
 
 import { Link } from 'react-router-dom'
 import useUserDashboard from '../hooks/useUserDashboard'
+import { useState } from 'react'
 
 const UsersCard = () => {
- 
-  const usersData = useUserDashboard()
+  const [searchValue, setSearchValue] = useState("")
+  
+  const {usersData,filteredData,setFilteredData} = useUserDashboard()
+
+  const SearchUser =()=>{
+     const filteredData = usersData.filter((data)=> data.name.toLowerCase().includes(searchValue.toLowerCase()))
+     console.log("fil",filteredData)
+     setFilteredData(filteredData)
+     setSearchValue("")
+  }
 
   if(!usersData) return;
   return (
@@ -12,18 +21,28 @@ const UsersCard = () => {
       <h1 className="text-3xl text-center font-bold text-gray-900 mb-8">Users List</h1>
        <div className="mb-8">
         <div className="flex gap-3 max-w-md mx-auto">
+          <h1 className="font-bold p-2 cursor-pointer whitespace-nowrap flex-shrink-0 w-24" onClick={SearchUser}>All Users</h1>
           <input
             type="text"
             placeholder="Search user"
+            value={searchValue}
             className="flex-1 px-4 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+            onChange={(e)=> setSearchValue(e.target.value)}
           />
-          <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+          <button className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          onClick={SearchUser}>
             Search
+          </button>
+          <button className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-md transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          >
+            Add
           </button>
         </div>
       </div>
+     
       <div className="space-y-4">
-        {usersData.map((user) => (
+        {filteredData.length === 0 && <p className='font-normal font-serif text-base'>Oops no users found......</p>}
+        {filteredData.map((user) => (
           <div
             key={user._id}
             className="bg-white border border-gray-200 rounded-lg p-6 shadow-sm hover:shadow-md transition-shadow duration-200"

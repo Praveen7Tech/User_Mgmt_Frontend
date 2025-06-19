@@ -6,7 +6,7 @@ const useProfileData =(userId)=>{
 
     useEffect(()=>{
         fetchData()
-    },[])
+    },[userData])
 
     const  fetchData = async()=>{
         try {

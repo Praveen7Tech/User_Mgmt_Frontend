@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 
 const useUserDashboard = ()=>{
      const [usersData, setUsersData] = useState([])
+     const [filteredData, setFilteredData] = useState([])
 
     useEffect(()=>{
         fetchUsersData()
@@ -14,13 +15,14 @@ const useUserDashboard = ()=>{
         const usersData = await axios.get("http://localhost:3003/api/admin/getUsersData")
         const data = usersData?.data
         setUsersData(data)
-        console.log("data",data)
+        setFilteredData(data)
+
         } catch (error) {
         console.log(error)
         }
     }
 
-    return usersData
+    return {usersData,filteredData, setUsersData, setFilteredData}
 }
 
 export default useUserDashboard;

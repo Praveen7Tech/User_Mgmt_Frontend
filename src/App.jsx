@@ -10,6 +10,8 @@ import UserProfile from './pages/UserProfile'
 import AdminLogin from './pages/AdminLogin'
 import DashBoard from './pages/DashBoard'
 import ShowProfileCard from './components/ShowpROFILEcARD.JSX'
+import { ToastContainer } from 'react-toastify'
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
@@ -52,9 +54,12 @@ function App() {
          />
          <Route path="/ShowUser/:userId"
          element={
-           <ShowProfileCard/>
+          <ProtectedRoute>
+             <ShowProfileCard/>
+           </ProtectedRoute>
          }/>
       </Routes>
+      <ToastContainer position='top-center' autoClose={2000}/>
     </>
   )
 }
