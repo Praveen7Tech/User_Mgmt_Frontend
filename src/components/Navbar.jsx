@@ -10,10 +10,11 @@ const Navbar = () => {
   
   const user = useSelector((state) => state.user);
   //const admin = useSelector((store)=> store.admin)
-
-  const {name} = useUserData()
   const dispatch = useDispatch()
 
+  const userData = useUserData()
+  if(!userData) return;
+  const {name} = userData
 
   const LogOut =()=>{
     if(user?.userinfo?.role === "user"){

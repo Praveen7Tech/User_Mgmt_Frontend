@@ -4,34 +4,31 @@ import { useSelector } from "react-redux"
 
 const useUserData = ()=>{
 
-  const [name, setName] = useState("")
-  const [email, setEmail] = useState("")
-  const [image, setImage] = useState(null)
+  const [userData, setUserData] = useState(null)
 
-  const ProfileImage = `http://localhost:3003/${image}`
+  //const ProfileImage = `http://localhost:3003/${image}`
 
   const User = useSelector((store)=> store.user.userinfo)
   const Admin = useSelector((store)=> store.admin.admininfo)
-
+  const userId =User ? User._id : Admin.id
   useEffect(()=>{
      fetchUserData()
-  },[])
+  },[userData])
 
   const fetchUserData=async()=>{
      try {
-       const userId =User ? User._id : Admin.id
-       const {data} = await axios.get(`http://localhost:3003/api/user/getUserData/${userId}`)
-
-       setName(data.name)
-       setEmail(data.email)
-       setImage(data.profileImage)
+       
+       const json = await axios.get(`http://localhost:3003/api/user/getUserData/${userId}`)
+       const data = json?.data
+       console.log("duu",data)
+       setUserData(data)
 
      } catch (error) {
       console.log(error)
      }
   }
 
-    return {name,email,ProfileImage}
+    return userData
 }
 
 export default useUserData;
