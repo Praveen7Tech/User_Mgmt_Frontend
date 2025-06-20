@@ -79,7 +79,10 @@ const FormSubmit= async()=>{
               placeholder="Enter your full name"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
               value={name}
-              onChange={(e)=> setName(e.target.value)}
+              onChange={(e)=>{ 
+                setName(e.target.value)
+                if(e.target.value.trim()) setNameMsg("")
+              }}
             />
             <span className="text-red-500 text-sm">{nameMsg}</span>
           </div>
@@ -99,7 +102,10 @@ const FormSubmit= async()=>{
               placeholder="Enter your email"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
               value={email}
-              onChange={(e)=> setEmail(e.target.value)}
+              onChange={(e)=>{
+                 setEmail(e.target.value)
+                 if(e.target.value.includes("@")) setEmailMsg("")
+                }}
             />
             <span className="text-red-500 text-sm">{emailMsg}</span>
           </div>
@@ -117,7 +123,10 @@ const FormSubmit= async()=>{
               placeholder="Create a password"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
               value={password}
-              onChange={(e)=> setPassword(e.target.value)}
+              onChange={(e)=>{
+                 setPassword(e.target.value)
+                 if(e.target.value.length >= 6) setPassMsg("")
+              }}
             />
             {passMsg && <span className="text-red-500 text-sm">{passMsg}</span>}
             {!passMsg && error && <span className="text-red-500 text-sm">{error}</span>}

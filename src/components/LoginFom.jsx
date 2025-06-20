@@ -69,7 +69,10 @@ const LoginFom = () => {
                   value={email}
                   placeholder="Enter your email"
                   className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  onChange={(e)=> setEmail(e.target.value)}
+                  onChange={(e)=>{
+                     setEmail(e.target.value)
+                     if(e.target.value.includes("@")) setEmailMsg("")
+                  }}
                 />
                 <span className="text-red-500 text-sm">{emailMsg}</span>
               </div>
@@ -87,7 +90,10 @@ const LoginFom = () => {
                   value={password}
                   placeholder="Enter your password"
                   className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                  onChange={(e)=> setPassword(e.target.value)}
+                  onChange={(e)=>{
+                     setPassword(e.target.value)
+                     if(e.target.value.length >=6) setPassMsg("")
+                  }}
                 />
                 <span className="text-red-500 text-sm">{passMsg}</span>
                 <span className='text-red-500 text-sm'>{Error}</span>

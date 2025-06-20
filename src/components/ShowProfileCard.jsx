@@ -5,18 +5,29 @@ import useProfileData from "../hooks/useProfileData"
 import { useState } from "react"
 import axios from "axios"
 import { toast } from "react-toastify"
+import { validateForm } from "../utils/validateForm"
 
 const ShowProfileCard = () => {
    const [editMode,setEditMode] = useState(false)
    const [editName, setEditname] = useState("")
+   const [nameMsg,setNameMsg] = useState("")
 
    const navigate = useNavigate()
-
     const {userId} = useParams()
+
     const userData = useProfileData(userId)
     if(!userData) return 
     const {name,email,profileImage} = userData
     const imageURL = `http://localhost:3003/${profileImage}`
+
+    const ValidateForm = ()=>{
+      const {nameError} = validateForm(editName)
+      console.log("uii",nameError)
+      setNameMsg(nameError)
+      if(nameError) return
+
+      EditUser()
+    }
 
     const EditUser = async()=>{
       const Data = {editName} 
@@ -58,16 +69,22 @@ const ShowProfileCard = () => {
           </div>
 
           <div className="space-y-3 pt-4">
-            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+            <div className='p-3 bg-gray-50 rounded-lg'>
+            <div className="flex items-center space-x-3">
               <User className="w-5 h-5 text-purple-500" />
               <div>
                 <p className="text-sm text-gray-500">Name</p>
                 {editMode ? 
-                  <input type="text" className="flex-1 px-4 py-1 border border-gray-400 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" onChange={(e)=> setEditname(e.target.value)}/>
+                  <input type="text" className="flex-1 px-4 py-1 border border-gray-400 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" onChange={(e)=>{
+                     setEditname(e.target.value)
+                     if(e.target.value.trim()) setNameMsg("")
+                  }}/>
                   :
                   <p className="text-gray-800 font-medium">{name}</p>
                 }
               </div>
+              </div>
+              {nameMsg && <span className="text-red-500 text-sm ml-8">{nameMsg}</span>}
             </div>
 
             <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
@@ -91,7 +108,7 @@ const ShowProfileCard = () => {
           {
             editMode ? 
             (<div className="flex pt-6 gap-7">
-            <button className="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-medium transition-colors" onClick={EditUser}>
+            <button className="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-medium transition-colors" onClick={ValidateForm}>
               Save
             </button>
              <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-medium transition-colors" onClick={()=>setEditMode(false)}>

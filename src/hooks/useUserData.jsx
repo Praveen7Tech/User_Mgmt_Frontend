@@ -13,7 +13,7 @@ const useUserData = ()=>{
   const userId =User ? User._id : Admin.id
   useEffect(()=>{
      fetchUserData()
-  },[userData])
+  },[])
 
   const fetchUserData=async()=>{
      try {

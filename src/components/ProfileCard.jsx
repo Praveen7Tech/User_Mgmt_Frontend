@@ -5,6 +5,7 @@ import { useState } from "react"
 import { Input } from "postcss"
 import axios from "axios"
 import { toast } from "react-toastify"
+import { validateForm } from "../utils/validateForm"
 
 const ProfileCard = () => {
 
@@ -12,11 +13,24 @@ const ProfileCard = () => {
   const [editName, setEditName] = useState("")
   const [editPhone, setEditPhone] = useState("")
   const [image,setImage] = useState(null)
+  const [nameMsg, setNameMsg] = useState("")
  
+  console.log("1",nameMsg)
+  console.log("11",editName)
   const userData = useUserData()
   if(!userData) return <h1>loading...</h1>
     const {name,email,profileImage,_id} = userData
     const imageURL = image ? URL.createObjectURL(image) : `http://localhost:3003/${profileImage}`
+  
+    console.log("2",nameMsg)
+    console.log("22",editName)
+  const ValidateForm = ()=>{
+    const {nameError} = validateForm(editName)
+    setNameMsg(nameError)
+    if(nameError) return
+
+    UpdateProfile()
+  }
   
 
   const UpdateProfile = async()=>{
@@ -34,7 +48,6 @@ const ProfileCard = () => {
       })
       toast.success(data.data.message)
       setEditMode(false)
-      console.log(data)
     } catch (error) {
       console.log(error)
     }
@@ -71,15 +84,23 @@ const ProfileCard = () => {
           </div>
 
           <div className="space-y-3 pt-4">
-            <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
+            <div className='p-3 bg-gray-50 rounded-lg'>
+            <div className="flex items-center space-x-3 ">
               <User className="w-5 h-5 text-purple-500" />
               <div>
                 <p className="text-sm text-gray-500">Name</p>
-                {editMode ? (<input type="text" className="flex-1 px-4 py-1 border border-gray-400 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" defaultValue={name} onChange={(e)=> setEditName(e.target.value)}/>)
+                {editMode ? 
+                <input type="text" className="flex-1 px-4 py-1 border border-gray-400 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500" 
+                defaultValue={name} onChange={(e)=>{
+                   setEditName(e.target.value)
+                   if(e.target.value.trim()) setNameMsg("")
+                  }}/>
                 :
                 (<p className="text-gray-800 font-medium">{name}</p>)
                 }
               </div>
+              </div>
+                {nameMsg && <span className="text-red-500 text-sm ml-8">{nameMsg}</span>}
             </div>
 
            {!editMode &&
@@ -118,7 +139,7 @@ const ProfileCard = () => {
             {
               editMode ? 
               (<div className="flex gap-7 pt-4">
-              <button className="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-medium transition-colors" onClick={UpdateProfile}>
+              <button className="w-full bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded-lg font-medium transition-colors" onClick={ValidateForm}>
               Update
             </button>
             <button className="w-full bg-red-500 hover:bg-red-600 text-white py-2 px-4 rounded-lg font-medium transition-colors" onClick={()=>{
@@ -130,7 +151,10 @@ const ProfileCard = () => {
             </div>)
             :
             (<div className="flex pt-6">
-            <button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg font-medium transition-colors" onClick={()=> setEditMode(true)}>
+            <button className="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg font-medium transition-colors" onClick={()=>{ 
+              setEditMode(true)
+              setEditName(name)
+            }}>
               Edit Profile
             </button>
             </div>)
