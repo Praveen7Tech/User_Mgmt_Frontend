@@ -12,6 +12,7 @@ import DashBoard from './pages/DashBoard'
 import ShowProfileCard from './components/ShowpROFILEcARD.JSX'
 import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
+import CreateUser from './pages/CrateUser'
 
 function App() {
   return (
@@ -57,7 +58,14 @@ function App() {
           <ProtectedRoute>
              <ShowProfileCard/>
            </ProtectedRoute>
-         }/>
+         }
+         />
+         <Route path="/addUser" 
+         element={
+          <ProtectedRoute>
+            <CreateUser/>
+          </ProtectedRoute>
+          }/>
       </Routes>
       <ToastContainer position='top-center' autoClose={2000}/>
     </>
