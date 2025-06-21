@@ -2,11 +2,12 @@
 import React from 'react'
 import UsersCard from '../components/UsersCard'
 import Navbar from '../components/Navbar'
+import AdminNavbar from '../components/AdminNavbar'
 
 const DashBoard = () => {
   return (
     <div>
-      <Navbar/>
+      <AdminNavbar/>
       <UsersCard/>
     </div>
   )

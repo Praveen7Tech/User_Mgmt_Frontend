@@ -5,30 +5,32 @@ import { useSelector } from "react-redux"
 const useUserData = ()=>{
 
   const [userData, setUserData] = useState(null)
-
-  //const ProfileImage = `http://localhost:3003/${image}`
+  const [updateData, setUpdateData] = useState(true)
 
   const User = useSelector((store)=> store.user.userinfo)
-  const Admin = useSelector((store)=> store.admin.admininfo)
-  const userId =User ? User._id : Admin.id
+  const userId =User._id 
+
   useEffect(()=>{
+    if(!updateData) return
      fetchUserData()
-  },[])
+  },[updateData])
 
   const fetchUserData=async()=>{
      try {
-       
        const json = await axios.get(`http://localhost:3003/api/user/getUserData/${userId}`)
        const data = json?.data
        console.log("duu",data)
        setUserData(data)
+       setUpdateData(false)
 
      } catch (error) {
       console.log(error)
      }
   }
 
-    return userData
+  const reFetchData = ()=> setUpdateData(true)
+
+    return {userData, reFetchData}
 }
 
 export default useUserData;

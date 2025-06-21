@@ -6,6 +6,7 @@ import { useState } from "react"
 import axios from "axios"
 import { toast } from "react-toastify"
 import { validateForm } from "../utils/validateForm"
+import AdminNavbar from "./AdminNavbar"
 
 const ShowProfileCard = () => {
    const [editMode,setEditMode] = useState(false)
@@ -52,7 +53,7 @@ const ShowProfileCard = () => {
     
   return (
     <>
-    <Navbar/>
+    <AdminNavbar/>
     <div className="flex mt-24 items-center justify-center bg-gray-50 p-4">
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
         {/* Avatar Section */}

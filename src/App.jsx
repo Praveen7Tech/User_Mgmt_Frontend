@@ -1,6 +1,4 @@
 import React from 'react'
-import Navbar from './components/Navbar'
-import Login from './pages/Login'
 import { Routes, Route } from 'react-router-dom'
 import Home from './pages/Home'
 import Register from './pages/Register'
@@ -9,10 +7,12 @@ import PublicRoute from './context/PublicRoute'
 import UserProfile from './pages/UserProfile'
 import AdminLogin from './pages/AdminLogin'
 import DashBoard from './pages/DashBoard'
-import ShowProfileCard from './components/ShowpROFILEcARD.JSX'
 import { ToastContainer } from 'react-toastify'
 import "react-toastify/dist/ReactToastify.css";
 import CreateUser from './pages/CrateUser'
+import ProtectedAdmin from './context/ProtectedAdmin'
+import PublicAdmin from './context/PublicAdmin'
+import ShowProfileCard from './components/ShowProfileCard'
 
 function App() {
   return (
@@ -22,7 +22,7 @@ function App() {
          element={
           <PublicRoute>
              <Register/>
-         </PublicRoute>
+          </PublicRoute>
         }
          />
          <Route path="/Home" 
@@ -41,30 +41,30 @@ function App() {
          />
          <Route path="/adminLogin"
          element={
-          <PublicRoute>
+          <PublicAdmin>
             <AdminLogin/>
-         </PublicRoute>
+          </PublicAdmin>
         } 
          />
          <Route path="/dashboard"
          element={
-          <ProtectedRoute>
+          <ProtectedAdmin>
            <DashBoard/>
-          </ProtectedRoute>
+          </ProtectedAdmin>
          }
          />
          <Route path="/ShowUser/:userId"
          element={
-          <ProtectedRoute>
+          <ProtectedAdmin>
              <ShowProfileCard/>
-           </ProtectedRoute>
+           </ProtectedAdmin>
          }
          />
          <Route path="/addUser" 
          element={
-          <ProtectedRoute>
+          <ProtectedAdmin>
             <CreateUser/>
-          </ProtectedRoute>
+          </ProtectedAdmin>
           }/>
       </Routes>
       <ToastContainer position='top-center' autoClose={2000}/>
