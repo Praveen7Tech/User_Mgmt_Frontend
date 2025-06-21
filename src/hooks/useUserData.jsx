@@ -19,7 +19,6 @@ const useUserData = ()=>{
      try {
        const json = await axios.get(`http://localhost:3003/api/user/getUserData/${userId}`)
        const data = json?.data
-       console.log("duu",data)
        setUserData(data)
        setUpdateData(false)
 

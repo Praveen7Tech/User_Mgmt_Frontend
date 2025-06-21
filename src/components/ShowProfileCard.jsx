@@ -23,7 +23,6 @@ const ShowProfileCard = () => {
 
     const ValidateForm = ()=>{
       const {nameError} = validateForm(editName)
-      console.log("uii",nameError)
       setNameMsg(nameError)
       if(nameError) return
 

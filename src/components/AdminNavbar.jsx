@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { logoutAdmin } from '../redux/adminSlice';
 
 const AdminNavbar = () => {
+  console.log("vanbar rendered")
   const [adminData, setAdminData] = useState(null)
   const dispatch = useDispatch()
   
@@ -13,7 +14,7 @@ const AdminNavbar = () => {
   
   useEffect(()=>{
    FetchAdmin()
- },[])
+  },[Admin?.id])
 
  const FetchAdmin = async()=>{
   try {
@@ -25,20 +26,32 @@ const AdminNavbar = () => {
  }
 
  if(!adminData) return
+
+ const {name} = adminData
   
   return (
-    <div className='flex justify-between p-3 m3 bg-red-200'>
-      <h2 className='font-bold p-2 m-2 text-xl cursor-pointer'><Link to={"/dashboard"}>Welcome Home : </Link><span className='font-normal'>{adminData.name}</span></h2>
-      <div className='flex items-center gap-3'>
-        <div className='flex w-8 h'>
+    <div className="flex justify-between p-6 m-4 bg-white rounded-2xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-300">
+          <h2 className="font-bold p-2 m-2 text-xl cursor-pointer text-gray-800">
+            <Link
+              to={"/dashboard"}
+              className="hover:text-indigo-600 transition-colors duration-200 underline-offset-4 hover:underline"
+            >
+              Welcome Dashboard :
+            </Link>
+            <span className="font-normal text-gray-500">{name}</span>
+          </h2>
+    
+          <div className="flex items-center gap-3">
+            
+            <button
+              className="bg-green-100 hover:bg-green-200 text-green-800 font-medium py-2 px-8 m-2 rounded-lg transition-all duration-200 border border-green-200 hover:border-green-300"
+              onClick={()=> dispatch(logoutAdmin())}
+            >
+              LogOut
+            </button>
+          </div>
         </div>
-          <button className='bg-green-300 py-2 px-8 m-2 rounded-lg'
-          onClick={()=> dispatch(logoutAdmin())}>
-            LogOut
-          </button>
-      </div>
-    </div>
   )
 }
 
-export default AdminNavbar
+export default React.memo(AdminNavbar);

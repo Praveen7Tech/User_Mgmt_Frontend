@@ -1,16 +1,16 @@
 
 import { Link } from 'react-router-dom'
 import useUserDashboard from '../hooks/useUserDashboard'
-import { useState } from 'react'
+import React, { useState } from 'react'
 
 const UsersCard = () => {
+  console.log("body rendered")
   const [searchValue, setSearchValue] = useState("")
   
   const {usersData,filteredData,setFilteredData} = useUserDashboard()
 
   const SearchUser =()=>{
      const filteredData = usersData.filter((data)=> data.name.toLowerCase().includes(searchValue.toLowerCase()))
-     console.log("fil",filteredData)
      setFilteredData(filteredData)
      setSearchValue("")
   }
@@ -75,4 +75,4 @@ const UsersCard = () => {
   )
 }
 
-export default UsersCard
+export default React.memo(UsersCard);

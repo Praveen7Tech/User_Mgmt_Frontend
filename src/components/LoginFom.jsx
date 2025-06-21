@@ -33,7 +33,6 @@ const LoginFom = () => {
             const {data} = await axios.post("http://localhost:3003/api/admin/adminLogin",adminData)
 
             dispatch(setAdmin({admin : data.admininfo, token : data.token}))
-            console.log("data--",data)
             navigate("/dashboard", {replace: true})
             
         } catch (error) {

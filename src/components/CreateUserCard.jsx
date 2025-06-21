@@ -31,7 +31,6 @@ const CreateUserCard = () => {
         try {
             const Data ={name,email,password}
             const data = await axios.post("http://localhost:3003/api/admin/createUser",Data)
-            console.log("dd",data)
             toast.success(data.data.message)
             navigate("/dashboard")
         } catch (error) {

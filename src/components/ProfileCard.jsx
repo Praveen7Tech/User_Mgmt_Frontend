@@ -1,12 +1,10 @@
 
   import { User, Mail,Phone,Camera } from "lucide-react"
-  import useUserData from "../hooks/useUserData"
   import { useState } from "react"
-  import { Input } from "postcss"
   import axios from "axios"
   import { toast } from "react-toastify"
   import { validateForm } from "../utils/validateForm"
-  //import { useUserContext } from "../context/UserContext"
+  import { useUserContext } from "../context/UserContext"
 
   const ProfileCard = () => {
 
@@ -16,8 +14,7 @@
     const [image,setImage] = useState(null)
     const [nameMsg, setNameMsg] = useState("")
 
-    const {userData,reFetchData} = useUserData()
-    //const {userData,refreshUserData} = useUserContext()
+    const {userData, updateUserData} = useUserContext()
 
     if(!userData) return <h1>loading...</h1>
       const {name,email,profileImage,_id} = userData
@@ -45,7 +42,7 @@
           }
         })
         toast.success(data.data.message)
-        reFetchData()
+        updateUserData()
         setEditMode(false)
       } catch (error) {
         console.log(error)

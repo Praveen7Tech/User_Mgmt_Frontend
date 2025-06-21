@@ -1,44 +1,36 @@
-// src/context/UserContext.jsx
-import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-const UserContext = createContext();
+const UserContext = createContext()
 
-export const UserProvider = ({ children }) => {
-  const [userData, setUserData] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const user = useSelector((store) => store.user.userinfo);
+export const UserProvider = ({children}) =>{
+  const [userData, setUserData] = useState(null)
 
-  const userId = user?._id;
+  const User = useSelector((store)=> store.user.userinfo)
+  const userId = User?._id
 
-  const fetchUserData = async () => {
-    if (!userId) return;
+  useEffect(()=>{
+    fetchUserData()
+  },[userId])
+
+  const fetchUserData = async()=>{
     try {
-      const res = await axios.get(`http://localhost:3003/api/user/getUserData/${userId}`);
-      console.log("cc",res.data)
-      setUserData(res.data);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
+      const json = await axios.get(`http://localhost:3003/api/user/getUserData/${userId}`)
+      const data = json?.data
+      setUserData(data)
+    } catch (error) {
+      console.log(error)
     }
-  };
+  }
 
-  const refreshUserData = () => {
-    fetchUserData();
-  };
-
-  useEffect(() => {
-    fetchUserData();
-  }, [userId]);
+  const updateUserData = ()=> fetchUserData()
 
   return (
-    <UserContext.Provider value={{ userData, refreshUserData, loading }}>
+    <UserContext.Provider value={{userData, updateUserData}}>
       {children}
     </UserContext.Provider>
-  );
-};
+  )
+}
 
-// Custom hook
-export const useUserContext = () => useContext(UserContext);
+export const useUserContext = ()=> useContext(UserContext)
