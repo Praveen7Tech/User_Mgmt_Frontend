@@ -11,7 +11,7 @@ export const AdminProvider = ({children})=>{
 
     useEffect(()=>{
         FetchAdmin()
-    },[Admin.id])
+    },[Admin?.id])
 
     const FetchAdmin = async()=>{
         try {
