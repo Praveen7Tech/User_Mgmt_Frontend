@@ -4,7 +4,6 @@ import useUserDashboard from '../hooks/useUserDashboard'
 import React, { useState } from 'react'
 
 const UsersCard = () => {
-  console.log("body rendered")
   const [searchValue, setSearchValue] = useState("")
   
   const {usersData,filteredData,setFilteredData} = useUserDashboard()

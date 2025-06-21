@@ -1,33 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { DiAndroid  } from "react-icons/di";
+import React  from 'react'
 import { Link } from 'react-router-dom';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch} from 'react-redux';
 import { logoutAdmin } from '../redux/adminSlice';
+import { useAdmin } from '../context/AdminContext';
 
 const AdminNavbar = () => {
   console.log("vanbar rendered")
-  const [adminData, setAdminData] = useState(null)
   const dispatch = useDispatch()
-  
-  const Admin = useSelector((store)=> store.admin.admininfo)
-  
-  useEffect(()=>{
-   FetchAdmin()
-  },[Admin?.id])
 
- const FetchAdmin = async()=>{
-  try {
-    const json  = await axios.get(`http://localhost:3003/api/admin/getAdmin/${Admin.id}`)
-    setAdminData(json.data)
-  } catch (error) {
-    console.log(error)
-  }
- }
+  const {adminData} = useAdmin()
 
- if(!adminData) return
+  if(!adminData) return
 
- const {name} = adminData
+  const {name} = adminData
   
   return (
     <div className="flex justify-between p-6 m-4 bg-white rounded-2xl shadow-md border border-gray-100 hover:shadow-lg transition-shadow duration-300">
@@ -54,4 +39,4 @@ const AdminNavbar = () => {
   )
 }
 
-export default React.memo(AdminNavbar);
+export default AdminNavbar

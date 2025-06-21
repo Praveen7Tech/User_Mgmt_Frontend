@@ -10,7 +10,7 @@ const UserProfile = lazy(() => import('./pages/UserProfile'));
 const AdminLogin = lazy(() => import('./pages/AdminLogin'));
 const DashBoard = lazy(() => import('./pages/DashBoard'));
 const CreateUser = lazy(() => import('./pages/CrateUser'));
-const ShowProfileCard = lazy(() => import('./components/ShowProfileCard'));
+const ShowProfileUser = lazy(() => import('./pages/ShowProfileUser'));
 
 import ProtectedRoute from './context/ProtectedRoute';
 import PublicRoute from './context/PublicRoute';
@@ -73,7 +73,7 @@ function App() {
             path="/ShowUser/:userId"
             element={
               <ProtectedAdmin>
-                <ShowProfileCard />
+                <ShowProfileUser/>
               </ProtectedAdmin>
             }
           />

@@ -51,8 +51,6 @@ const ShowProfileCard = () => {
     }
     
   return (
-    <>
-    <AdminNavbar/>
     <div className="flex mt-24 items-center justify-center bg-gray-50 p-4">
       <div className="bg-white rounded-2xl shadow-lg p-8 w-full max-w-md">
         {/* Avatar Section */}
@@ -128,7 +126,6 @@ const ShowProfileCard = () => {
         </div>
       </div>
     </div>
-    </>
   )
 }
 
