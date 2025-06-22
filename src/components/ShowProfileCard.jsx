@@ -60,7 +60,6 @@ const ShowProfileCard = () => {
               <img
                 src={imageURL || "/placeholder.svg"}
                 className="w-full h-full rounded-full object-cover"
-                alt="Profile"
               />
             </div>
           </div>
@@ -100,14 +99,6 @@ const ShowProfileCard = () => {
                 <div>
                   <p className="text-sm text-gray-500 dark:text-gray-400">Email</p>
                   <p className="text-gray-800 dark:text-gray-200 font-medium">{email}</p>
-                </div>
-              </div>
-
-              <div className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border dark:border-gray-600">
-                <Phone className="w-5 h-5 text-green-500 dark:text-green-400" />
-                <div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400">Phone</p>
-                  <p className="text-gray-800 dark:text-gray-200 font-medium">phone number</p>
                 </div>
               </div>
             </div>

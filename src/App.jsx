@@ -3,7 +3,6 @@ import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Lazy loaded components
 const Home = lazy(() => import('./pages/Home'));
 const Register = lazy(() => import('./pages/Register'));
 const UserProfile = lazy(() => import('./pages/UserProfile'));
@@ -16,6 +15,7 @@ import ProtectedRoute from './context/ProtectedRoute';
 import PublicRoute from './context/PublicRoute';
 import ProtectedAdmin from './context/ProtectedAdmin';
 import PublicAdmin from './context/PublicAdmin';
+import NotFound from './components/NotFound';
 
 
 function App() {
@@ -85,6 +85,7 @@ function App() {
               </ProtectedAdmin>
             }
           />
+          <Route path="*" element={<NotFound/>}/>
         </Routes>
       </Suspense>
 

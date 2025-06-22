@@ -10,7 +10,6 @@ import { useUserContext } from "../context/UserContext"
 const ProfileCard = () => {
   const [editMode, setEditMode] = useState(false)
   const [editName, setEditName] = useState("")
-  const [editPhone, setEditPhone] = useState("")
   const [image, setImage] = useState(null)
   const [nameMsg, setNameMsg] = useState("")
 
@@ -60,7 +59,6 @@ const ProfileCard = () => {
               <img
                 src={imageURL || "/placeholder.svg"}
                 className="w-full h-full rounded-full object-cover"
-                alt="Profile"
               />
             </div>
             {editMode && (
@@ -123,29 +121,6 @@ const ProfileCard = () => {
                 </div>
               )}
 
-              {/* Phone Field */}
-              <div className="flex items-center space-x-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg border dark:border-gray-600">
-                <Phone className="w-5 h-5 text-green-500 dark:text-green-400" />
-                <div className="flex-1">
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">Phone</p>
-                  {editMode ? (
-                    <input
-                      type="text"
-                      value={editPhone}
-                      onChange={(e) => {
-                        const onlyNums = e.target.value.replace(/[^0-9]/g, "")
-                        setEditPhone(onlyNums)
-                      }}
-                      className="w-full px-4 py-2 border border-gray-300 dark:border-gray-500 rounded-md shadow-sm placeholder-gray-400 dark:placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
-                      placeholder="Enter phone number"
-                    />
-                  ) : (
-                    <p className="text-gray-800 dark:text-gray-200 font-medium">
-                      {editPhone || "Phone number not set"}
-                    </p>
-                  )}
-                </div>
-              </div>
             </div>
 
             {/* Action Buttons */}
@@ -163,7 +138,6 @@ const ProfileCard = () => {
                     setEditMode(false)
                     setImage(null)
                     setEditName("")
-                    setEditPhone("")
                     setNameMsg("")
                   }}
                 >
